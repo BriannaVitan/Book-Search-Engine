@@ -1,7 +1,6 @@
 import express from "express";
 import path from "path";
 import db from "./config/connection.js";
-import routes from "./routes/index.js";
 
 // boiler plate code
 import { ApolloServer } from "@apollo/server";
@@ -38,9 +37,10 @@ const startApolloServer = async () => {
   app.use(express.urlencoded({ extended: true }));
   // this one parses incoming requests with JSON payloads
   app.use(express.json());
-
+  
   // attempting to use /graphql as middleware and authenticate token
   app.use("/graphql", expressMiddleware(server as any,
+
     {
       context: authenticateToken as any
     }
@@ -58,6 +58,7 @@ const startApolloServer = async () => {
   }
   console.log('Attempting to connect to the db');
  
+
   db.once("open", () => {
     console.log(`🌍 db connection made`);
   });
@@ -69,7 +70,7 @@ const startApolloServer = async () => {
     console.log(`API server running on port ${PORT}!`);
     console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
   });
-  app.use(routes);
+ 
 };
 
 // starts the apollo server and express
